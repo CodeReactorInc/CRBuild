@@ -12,11 +12,14 @@ def convert_write_value(value: CRDataValue, key: str) -> bytearray:
     buff.append(0x00)
     buffer.extend(buff)
 
+    del buff
+
     if value.type == CRDataType.String:
         buff2 = bytearray()
         buff2.extend(value.get().encode('utf8'))
         buff2.append(0x00)
         buffer.extend(buff2)
+        del buff2
 
     elif value.type == CRDataType.Boolean:
         if value.get() == True:

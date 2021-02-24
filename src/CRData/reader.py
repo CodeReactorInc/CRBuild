@@ -31,7 +31,7 @@ def crdata_read(io: BinaryIO) -> CRDataMap:
             byte = io.read(1)
 
             while byte != bytes([0]):
-                if io.tell() == file_length - 1: raise CRDataError("Cannot parse object name")
+                if io.tell() == file_length: raise CRDataError("Cannot parse object name")
                 buffer.extend(byte)
                 byte = io.read(1)
             del byte
@@ -52,7 +52,7 @@ def crdata_read(io: BinaryIO) -> CRDataMap:
             byte = io.read(1)
 
             while byte != bytes([0]):
-                if io.tell() == file_length - 1: raise CRDataError("Cannot parse object name")
+                if io.tell() == file_length: raise CRDataError("Cannot parse object name")
                 buffer.extend(byte)
                 byte = io.read(1)
             del byte
@@ -66,7 +66,7 @@ def crdata_read(io: BinaryIO) -> CRDataMap:
             obj_byte = io.read(1)
 
             while obj_byte != bytes([0]):
-                if io.tell() == file_length - 1: raise CRDataError("Cannot parse object string")
+                if io.tell() == file_length: raise CRDataError("Cannot parse object string")
                 obj_buffer.extend(obj_byte)
                 obj_byte = io.read(1)
             del obj_byte
@@ -82,7 +82,7 @@ def crdata_read(io: BinaryIO) -> CRDataMap:
             byte = io.read(1)
 
             while byte != bytes([0]):
-                if io.tell() == file_length - 1: raise CRDataError("Cannot parse object name")
+                if io.tell() == file_length: raise CRDataError("Cannot parse object name")
                 buffer.extend(byte)
                 byte = io.read(1)
             del byte
@@ -101,7 +101,7 @@ def crdata_read(io: BinaryIO) -> CRDataMap:
             byte = io.read(1)
 
             while byte != bytes([0]):
-                if io.tell() == file_length - 1: raise CRDataError("Cannot parse object name")
+                if io.tell() == file_length: raise CRDataError("Cannot parse object name")
                 buffer.extend(byte)
                 byte = io.read(1)
             del byte
@@ -120,7 +120,7 @@ def crdata_read(io: BinaryIO) -> CRDataMap:
             byte = io.read(1)
 
             while byte != bytes([0]):
-                if io.tell() == file_length - 1: raise CRDataError("Cannot parse object name")
+                if io.tell() == file_length: raise CRDataError("Cannot parse object name")
                 buffer.extend(byte)
                 byte = io.read(1)
             del byte
