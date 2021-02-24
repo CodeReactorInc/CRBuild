@@ -34,12 +34,16 @@ def crdata_read(io: BinaryIO) -> CRDataMap:
                 if io.tell() == file_length - 1: raise CRDataError("Cannot parse object name")
                 buffer.extend(byte)
                 byte = io.read(1)
+            del byte
 
             obj_key = buffer.decode('utf8')
+            del buffer
             
             obj_bin_length = int.from_bytes(io.read(8), byteorder='big')
 
             obj[obj_key] = CRDataValue(bytearray(io.read(obj_bin_length)))
+            del obj_key
+            del obj_bin_length
             
         elif obj_type == bytes([1]):
             buffer = bytearray()
@@ -51,8 +55,10 @@ def crdata_read(io: BinaryIO) -> CRDataMap:
                 if io.tell() == file_length - 1: raise CRDataError("Cannot parse object name")
                 buffer.extend(byte)
                 byte = io.read(1)
+            del byte
 
             obj_key = buffer.decode('utf8')
+            del buffer
 
             obj_buffer = bytearray()
             
@@ -63,8 +69,11 @@ def crdata_read(io: BinaryIO) -> CRDataMap:
                 if io.tell() == file_length - 1: raise CRDataError("Cannot parse object string")
                 obj_buffer.extend(obj_byte)
                 obj_byte = io.read(1)
+            del obj_byte
 
             obj[obj_key] = CRDataValue(obj_buffer.decode('utf8'))
+            del obj_key
+            del obj_buffer
 
         elif obj_type == bytes([2]):
             buffer = bytearray()
@@ -76,10 +85,15 @@ def crdata_read(io: BinaryIO) -> CRDataMap:
                 if io.tell() == file_length - 1: raise CRDataError("Cannot parse object name")
                 buffer.extend(byte)
                 byte = io.read(1)
+            del byte
 
             obj_key = buffer.decode('utf8')
+            del buffer
 
+            if (io.tell() + 8 >= file_length): raise CRDataError("Corrupted CRData file")
             obj[obj_key] = CRDataValue(int.from_bytes(io.read(8), byteorder='big'))
+            del obj_key
+            
         elif obj_type == bytes([3]):
             buffer = bytearray()
             
@@ -90,11 +104,14 @@ def crdata_read(io: BinaryIO) -> CRDataMap:
                 if io.tell() == file_length - 1: raise CRDataError("Cannot parse object name")
                 buffer.extend(byte)
                 byte = io.read(1)
+            del byte
 
             obj_key = buffer.decode('utf8')
+            del buffer
 
             if (io.tell() + 8 >= file_length): raise CRDataError("Corrupted CRData file")
             obj[obj_key] = CRDataValue(struct.unpack('>d', io.read(8))[0])
+            del obj_key
 
         elif obj_type == bytes([4]):
             buffer = bytearray()
@@ -106,18 +123,27 @@ def crdata_read(io: BinaryIO) -> CRDataMap:
                 if io.tell() == file_length - 1: raise CRDataError("Cannot parse object name")
                 buffer.extend(byte)
                 byte = io.read(1)
+            del byte
 
             obj_key = buffer.decode('utf8')
+            del buffer
 
             if (io.tell() + 1 >= file_length): raise CRDataError("Corrupted CRData file")
             if io.read(1) == bytes([0]):
                 obj[obj_key] = CRDataValue(False)
             else:
                 obj[obj_key] = CRDataValue(True)
+
+            del obj_key
             
         else: raise CRDataError("Invalid type on CRData file")
 
         actual_index = io.tell()
         processed_obj += 1
+
+    del file_length
+    del obj_length
+    del actual_index
+    del processed_obj
 
     return obj
