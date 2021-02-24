@@ -1,7 +1,6 @@
-from os import error
 import struct
 from typing import BinaryIO
-from CRData.storage import CRDataMap, CRDataValue, get_type
+from CRData.storage import CRDataMap, CRDataValue
 
 class CRDataError(Exception):
     pass

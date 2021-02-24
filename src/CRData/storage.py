@@ -1,5 +1,4 @@
 from enum import Enum
-from io import SEEK_CUR
 
 class CRDataType(Enum):
     Binary = 0x00
